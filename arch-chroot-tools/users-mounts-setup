@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-_storage_setup() {
+_users_mounts_setup() {
   local \
     _storage="${1}" \
     _paths=()
@@ -27,5 +27,5 @@ app_opts=(
   "${storage_path}"
 )
 
-_user_setup \
+_user_mounts_setup \
   "${app_opts[@]}"
