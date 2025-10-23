@@ -22,8 +22,49 @@
 
 
 =====================================
-Arch Chroot Tools Authors
+graphical-environment-runtime-setup
 =====================================
 
-* Pellegrino Prevete <pellegrinoprevete@gmail.com>
-* Truocolo <truocolo@aol.com>
+
+------------------------------------------------------------------------------------
+Graphical environment runtime setup for vanilla Archiso systems
+------------------------------------------------------------------------------------
+:Version: graphical-environment-runtime-setup |version|
+:Manual section: 1
+
+
+Synopsis
+========
+
+graphical-environment-runtime-setup *[options]*
+
+
+Description
+===========
+
+Setups stuff for running a graphical environment
+in an vanilla Archiso environment
+
+
+Options
+=======
+
+-h                      Displays help.
+-c                      Enable color output
+-v                      Enable verbose output
+
+
+Bugs
+====
+
+https://github.com/themartiancompany/arch-chroot-tools/-/issues
+
+Copyright
+=========
+
+Copyright Pellegrino Prevete. AGPL-3.0.
+
+See also
+========
+
+.. include:: variables.rst

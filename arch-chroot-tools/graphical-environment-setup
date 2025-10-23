@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+
+_graphical_environment_runtime_setup() {
+  local \
+    _chroot="${1}" \
+    _paths=()
+  _paths+=(
+    '/run/dbus'
+    '/run/udev'
+  )
+  for _path in "${_paths[@]}"; do
+    mount \
+      -o \
+        bind \
+      "${_paths}" \
+      "${_chroot}${_path}"
+  done
+}
+
+if (( 0 < "${#}" )); then
+  chroot_path="${1}"
+else
+  chroot_path="$(pwd)"
+fi
+
+app_opts=(
+  "${chroot_path}"
+)
+
+_graphical_environment_runtime_setup \
+  "${app_opts[@]}"

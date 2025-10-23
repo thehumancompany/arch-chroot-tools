@@ -20,7 +20,7 @@
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 PREFIX ?= /usr/local
-_PROJECT=evm-contracts-tools
+_PROJECT=arch-chroot-tools
 DOC_DIR=$(DESTDIR)$(PREFIX)/share/doc/$(_PROJECT)
 BIN_DIR=$(DESTDIR)$(PREFIX)/bin
 MAN_DIR?=$(DESTDIR)$(PREFIX)/share/man
@@ -41,21 +41,7 @@ DOC_FILES=\
   $(wildcard *.md)
 
 _BASH_FILES=\
-  evm-contract-bytecode-get \
-  evm-contract-call \
-  evm-contract-deployer-get \
-  evm-contract-deployment-address \
-  evm-contract-deployment-networks \
-  evm-contract-deployment-versions \
-  evm-contract-deployments-dir
-_NODE_FILES=\
-  bytecode-creation-get \
-  bytecode-runtime-get \
-  contract-get \
-  deployer-get \
-  deployer-verify \
-  evm-contract-call-dynamic \
-  evm-contract-call-static
+  graphical-environment-runtime-setup
 
 _CHECK_TARGETS=\
   shellcheck
@@ -63,8 +49,7 @@ _CHECK_TARGETS_ALL=\
   check \
   $(_CHECK_TARGETS)
 _INSTALL_SCRIPTS_TARGETS=\
-  install-bash-scripts \
-  install-node-scripts
+  install-bash-scripts
 INSTALL_DOC_TARGETS=\
   install-doc \
   install-man
@@ -99,14 +84,6 @@ install-bash-scripts:
 	    "$(BIN_DIR)/$${_file}"; \
 	done
 
-install-node-scripts:
-
-	for _file in $(_NODE_FILES); do \
-	  $(_INSTALL_EXE) \
-	    "$(_PROJECT)/$${_file}" \
-	    "$(LIB_DIR)/$(_PROJECT)/$${_file}"; \
-	done
-
 install-doc:
 
 	$(_INSTALL_FILE) \
@@ -119,13 +96,7 @@ install-man:
 	$(_INSTALL_DIR) \
 	  "$(MAN_DIR)/man1"
 	rst2man \
-	  "man/evm-contract-bytecode-get.1.rst" \
-	  "$(MAN_DIR)/man1/evm-contract-bytecode-get.1"
-	rst2man \
-	  "man/evm-contract-call.1.rst" \
-	  "$(MAN_DIR)/man1/evm-contract-call.1"
-	rst2man \
-	  "man/evm-contract-deployer-get.1.rst" \
-	  "$(MAN_DIR)/man1/evm-contract-deployer-get.1"
+	  "man/graphical-environment-runtime-setup.1.rst" \
+	  "$(MAN_DIR)/man1/graphical-environment-runtime-setup.1"
 
 .PHONY: $(_PHONY_TARGETS)
