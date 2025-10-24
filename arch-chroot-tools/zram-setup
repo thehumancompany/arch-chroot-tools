@@ -39,7 +39,9 @@ _mem_free() {
 _mem_all() {
   grep \
     "MemTotal" \
-    "/proc/meminfo"
+    "/proc/meminfo" | \
+    awk \
+      '{print $2}'
 }
 
 _zram_setup() {
@@ -47,7 +49,9 @@ _zram_setup() {
     _device="${1}" \
     _size="${2}" \
     _memory \
-    _zramctl_opts=()
+    _zramctl_opts=() \
+    _mkswap_opts=() \
+    _swapon_opts=()
   if [[ "${_device}" == "" ]]; then
     _device="/dev/zram0"
   fi
@@ -65,10 +69,25 @@ _zram_setup() {
     --size
       "${_size}KiB"
   )
+  _mkswap_opts+=(
+    -U
+      clear
+  )
+  _swapon_opts+=(
+    --priority
+      100
+  )
   modprobe \
     "zram"
   zramctl \
-    "${_zram_opts[@]}" \
+    "${_device}" \
+    "${_zramctl_opts[@]}"
+  sync
+  mkswap \
+    "${_mkswap_opts[@]}" \
+    "${_device}"
+  swapon \
+    "${_swapon_opts[@]}" \
     "${_device}"
 }
 

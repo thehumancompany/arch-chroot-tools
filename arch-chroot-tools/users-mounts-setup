@@ -28,6 +28,7 @@ _users_mounts_setup() {
     "/home/user/.cache/qutebrowser"
     '/home/user/.cache/chromium'
     '/home/dev/.cache/evmfs'
+    '/home/dev/.cache/solidity-compiler'
     '/life'
   )
   for _path in "${_paths[@]}"; do
