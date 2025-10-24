@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+
+#    ----------------------------------------------------------------------
+#    Copyright © 2025  Pellegrino Prevete
+#
+#    All rights reserved
+#    ----------------------------------------------------------------------
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+_check_fs_btrfs() {
+  local \
+    _device="${1}"
+  btrfs \
+    check \
+      "${_device}" 
+}
+
+_mem_free() {
+  free | \
+    grep \
+      "Mem:" | \
+    awk \
+      '{print $4}'
+}
+
+_mem_all() {
+  grep \
+    "MemTotal" \
+    "/proc/meminfo"
+}
+
+_zram_setup() {
+  local \
+    _device="${1}" \
+    _size="${2}" \
+    _memory \
+    _zramctl_opts=()
+  if [[ "${_device}" == "" ]]; then
+    _device="/dev/zram0"
+  fi
+  if [[ "${_size}" == "" ]]; then
+    _memory="$( \
+      _mem_all)"
+    _size="$(( \
+      "${_memory}" / 10 ))"
+  fi
+  _memory="$( \
+    _mem_all)"
+  _zramctl_opts+=(
+    --algorithm
+      "zstd"
+    --size
+      "${_size}KiB"
+  )
+  modprobe \
+    "zram"
+  zramctl \
+    "${_zram_opts[@]}" \
+    "${_device}"
+}
+
+if (( 0 < "${#}" )); then
+  zram_device="${1}"
+else
+  zram_device="/dev/zram0"
+fi
+zram_size="$(( \
+  "$(_mem_all)" / 10 ))"
+if (( 1 < "${#}" )); then
+  zram_size="${2}"
+fi
+
+app_opts=(
+  "${zram_device}"
+  "${zram_size}"
+)
+
+_zram_setup \
+  "${app_opts[@]}"
