@@ -41,12 +41,6 @@ on classic `chroot` is these days `dbus` is set up by default
 to interact with `systemd` so if you don't run your system into a cgroup
 container you're gonna get into issues with many os functions.
 
-If you read the code you may read I've tried adding support for
-passing the sound card to the container as well but I haven't really
-still tried to have it working.
-
-If you do that please contribute back the change.
-
 # How to use
 
 After you've mounted your os somewhere (i.e. `/mnt`),
