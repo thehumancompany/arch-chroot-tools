@@ -26,18 +26,38 @@ ephemeral live cd using classic chroots or more
 modern systemd machinery.
 
 It's really just a bunch of temporary scripts I've written
-to speed up running a graphical environment from the baseline
-arch system I'm temporarly using before Life and
+to speed up running a graphical environment from the `releng`
+archiso profile system (the Arch Linux install drive)
+I'vebeen temporarly using (lol 3 years) before I will have
+restarted Life and
 [DogeOS](
   https://github.com/themartiancompany/dogeos)
-build system will have resumed working and of which
-the only ones I really use are `zram-setup` and `chroot-shell`,
-which starts a `systemd-nspawn` container able to run a graphical
-environment.
+public build system and of which the only ones I really use
+are `zram-setup` and `chroot-shell`, which starts a `systemd-nspawn`
+container able to run a graphical environment.
+
+The reason one needs these updated tools as one can't really rely
+on classic `chroot` is these days `dbus` is set up by default
+to interact with `systemd` so if you don't run your system into a cgroup
+container you're gonna get into issues with many os functions.
+
+If you read the code you may read I've tried adding support for
+passing the sound card to the container as well but I haven't really
+still tried to have it working.
+
+If you do that please contribute back the change.
 
 # How to use
 
-More or less the most 
+After you've mounted your os somewhere (i.e. `/mnt`),
+just run
+
+```bash
+chroot-shell \
+  "/mnt"
+```
+
+You may want to be a
 
 ## Installation
 
