@@ -92,6 +92,14 @@ _chroot_shell() {
       -type \
         "c")
   )
+  _sound_cards=( $(
+    find \
+      "/dev/snd" \
+      -maxdepth \
+        1 \
+      -type \
+        "c")
+  )
   _systemd_nspawn_opts+=(
     # --register=false
     # --link-journal="try-guest"
@@ -160,6 +168,11 @@ _chroot_shell() {
     -D
       "${_chroot}"
   )
+  for _card in "${_sound_cards[@]}"; do
+    _systemd_nspawn_opts+=(
+        --property=DeviceAllow="${_card} rw"
+    )
+  done
   _msg=(
     "Running systemd-nspawn with"
     "options '${_systemd_nspawn_opts[*]}'."
@@ -171,11 +184,10 @@ _chroot_shell() {
     "/dev/md"
   systemd-nspawn \
     "${_systemd_nspawn_opts[@]}" \
-    # Seemingly not working with \"
-    # --property=DeviceAllow=\"char-input rwm\"
     --property=DeviceAllow='char-input rwm' \
     --property=DeviceAllow='char-drm rw'
-    --property=DeviceAllow='/dev/snd rwm'
+    # Seemingly not working with \"
+    # --property=DeviceAllow=\"char-input rwm\"
 }
 
 _chroot="${1}"
